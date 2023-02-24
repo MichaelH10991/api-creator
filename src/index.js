@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require("cors");
 const loader = require('./loader');
-const creatorConfig = require('./config')
+const creatorConfig = require('./config');
+const logger = require('./logger');
 
 const app = express();
 const router = express.Router();
 
-app.use(cors())
+app.use(cors());
 
 /**
  * An express wrapper which dynamically configures and loads api endpoints.
@@ -16,12 +17,13 @@ app.use(cors())
  */
 const init = (apiPath, apiConfig, resources) => {
 
-
-  loader.init(router, apiConfig, apiPath);
+  const serviceLogger = logger.init(apiConfig);
+  
+  loader.init(router, apiConfig, resources, apiPath, serviceLogger);
 
   app.use(router);
 
-  app.listen(creatorConfig.port, console.log(`app listening on ${creatorConfig.port}`));
+  app.listen(creatorConfig.port, serviceLogger.info(`app listening on ${creatorConfig.port}`));
 
 }
 
