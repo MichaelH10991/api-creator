@@ -2,10 +2,10 @@
 
 ## Usage
 
-Your apis must look something like this:
+Your api endpoints must look something like this:
 
 ```javascript
-const init = (router, resources, config) => {
+const init = (router, config, resources) => {
   router.get("/foo", (req, res) => res.send("hello"));
 };
 
@@ -18,5 +18,5 @@ Initialise the library with something like this:
 const apiCreator = require("api-creator");
 
 const apiPath = `${__basename}/api`;
-apiCreator.init(config, resources, apiPath);
+apiCreator.init(apiPath, config, resources);
 ```

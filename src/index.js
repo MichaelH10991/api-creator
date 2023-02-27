@@ -12,12 +12,20 @@ app.use(cors());
 /**
  * An express wrapper which dynamically configures and loads api endpoints.
  * @param {String} apiPath The absolute path to the directory containing the apis.
- * @param {object} config optional configuration.
+ * @param {object} apiConfig optional configuration.
  * @param {object} resources optional resources for the apis to use.
  */
 const init = (apiPath, apiConfig, resources) => {
 
   const serviceLogger = logger.init(apiConfig);
+
+  if(!apiPath) {
+    throw new Error('Cannot proceed loading endpoints without an apiPath.')
+  }
+
+  if(!apiConfig) [
+    serviceLogger.warn('No config provided for service.')
+  ]
   
   loader.init(router, apiConfig, resources, apiPath, serviceLogger);
 
