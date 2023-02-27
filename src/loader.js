@@ -5,17 +5,15 @@ const express = require("express");
 const getHelpers = (absolutePath) => {
   const pathPart = path.relative(__dirname, absolutePath);
   return {
-    filePath: (file) => path.join(absolutePath, file),
     apiName: pathPart.substring(pathPart.lastIndexOf('/') + 1 ),
+    filePath: (file) => path.join(absolutePath, file),
     modulePath: (file) => `./${path.join(pathPart, file)}`
   }
 }
 
 const init = (router, config, resources, absolutePath = __dirname, logger) => {
   const { modulePath, filePath, apiName } = getHelpers(absolutePath);
-  const dir = fs
-    .readdirSync(absolutePath)
-    .filter((file) => file !== "index.js");
+  const dir = fs.readdirSync(absolutePath).filter((file) => file !== "index.js");
 
   dir.forEach((file) => {
     if (fs.statSync(filePath(file)).isDirectory()) {
@@ -29,7 +27,7 @@ const init = (router, config, resources, absolutePath = __dirname, logger) => {
           logger.info(`Using \"${apiName}\" specific config.`)
           route.init(router, config[apiName], resources);
         }else {
-          logger.info(`No config provided for \"${apiName}\" endpoint.`)
+          logger.warn(`No config provided for \"${apiName}\" endpoint.`)
           route.init(router, config, resources);
         }
       }
