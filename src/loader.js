@@ -5,16 +5,14 @@ const express = require("express");
 const getHelpers = (absolutePath) => {
   const pathPart = path.relative(__dirname, absolutePath);
   return {
-    pathPart,
     filePath: (file) => path.join(absolutePath, file),
-    apiName: pathPart.substring(pathPart.lastIndexOf('/') + 1 )
+    apiName: pathPart.substring(pathPart.lastIndexOf('/') + 1 ),
+    modulePath: (file) => `./${path.join(pathPart, file)}`
   }
 }
 
 const init = (router, config, resources, absolutePath = __dirname, logger) => {
-
-  const { pathPart, filePath, apiName } = getHelpers(absolutePath);
-
+  const { modulePath, filePath, apiName } = getHelpers(absolutePath);
   const dir = fs
     .readdirSync(absolutePath)
     .filter((file) => file !== "index.js");
@@ -25,11 +23,7 @@ const init = (router, config, resources, absolutePath = __dirname, logger) => {
       init(subRouter, config, resources, filePath(file), logger);
       router.use(`/${file}`, subRouter);
     } else {
-      const modulePath = `./${path.join(
-        pathPart,
-        file
-      )}`;
-      const route = require(modulePath);
+      const route = require(modulePath(file));
       if (route.init) {
         if(config && config[apiName]) {
           logger.info(`Using \"${apiName}\" specific config.`)
