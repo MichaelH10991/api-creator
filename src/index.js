@@ -3,9 +3,8 @@ const cors = require("cors");
 const loader = require('./loader');
 const creatorConfig = require('./config');
 const logger = require('./logger');
-const config = require('./config');
 
-const app = express();
+let app = express();
 const router = express.Router();
 
 
@@ -15,9 +14,14 @@ const router = express.Router();
  * @param {object} apiConfig optional configuration.
  * @param {object} resources optional resources for the apis to use.
  */
-const init = (apiPath, apiConfig, resources) => {
-  
+const init = (apiPath, apiConfig, resources, customApp) => {
+
   const serviceLogger = logger.init(apiConfig);
+
+  if (customApp) {
+    serviceLogger.info("Using custom app");
+    app = customApp;
+  }
   
   if(!apiPath) {
     throw new Error('Cannot proceed loading endpoints without an apiPath.')
@@ -27,8 +31,9 @@ const init = (apiPath, apiConfig, resources) => {
     serviceLogger.warn('No config provided for service.')
   }
 
-  if(config.corsOptions) {
-    app.use(cors(corsOptions));
+  if(apiConfig.corsOptions) {
+    serviceLogger.info('Configuring cors using:', apiConfig.corsOptions)
+    app.use(cors(apiConfig.corsOptions));
 
   }
   

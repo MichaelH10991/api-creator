@@ -2,6 +2,12 @@
 
 An express wrapper which allows you to quickly and dynamically create api endpoints, without having to worry about boilerplate code.
 
+## Installation
+
+It'll be a npm package eventually, but for the meantime, in your node project run:
+
+`npm i https://github.com/MichaelH10991/api-creator.git`
+
 ## Usage
 
 Create a directory structure, something like this:

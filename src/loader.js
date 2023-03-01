@@ -24,10 +24,10 @@ const init = (router, config, resources, absolutePath = __dirname, logger) => {
       const route = require(modulePath(file));
       if (route.init) {
         if(config && config[apiName]) {
-          logger.info(`Using \"${apiName}\" specific config.`)
+          logger.info(`Configuring /${apiName} with supplied config.`)
           route.init(router, config[apiName], resources);
         }else {
-          logger.warn(`No config provided for \"${apiName}\" endpoint.`)
+          logger.warn(`No config provided for /${apiName} endpoint.`)
           route.init(router, config, resources);
         }
       }
