@@ -3,11 +3,11 @@ const cors = require("cors");
 const loader = require('./loader');
 const creatorConfig = require('./config');
 const logger = require('./logger');
+const config = require('./config');
 
 const app = express();
 const router = express.Router();
 
-app.use(cors());
 
 /**
  * An express wrapper which dynamically configures and loads api endpoints.
@@ -16,16 +16,21 @@ app.use(cors());
  * @param {object} resources optional resources for the apis to use.
  */
 const init = (apiPath, apiConfig, resources) => {
-
+  
   const serviceLogger = logger.init(apiConfig);
-
+  
   if(!apiPath) {
     throw new Error('Cannot proceed loading endpoints without an apiPath.')
   }
-
-  if(!apiConfig) [
+  
+  if(!apiConfig) {
     serviceLogger.warn('No config provided for service.')
-  ]
+  }
+
+  if(config.corsOptions) {
+    app.use(cors(corsOptions));
+
+  }
   
   loader.init(router, apiConfig, resources, apiPath, serviceLogger);
 
