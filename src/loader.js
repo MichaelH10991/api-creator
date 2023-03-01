@@ -2,6 +2,11 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 
+/**
+ * Returns some helpful helpers for doing stuff.
+ * @param {*} absolutePath 
+ * @returns some helpful helpers.
+ */
 const getHelpers = (absolutePath) => {
   const pathPart = path.relative(__dirname, absolutePath);
   return {
@@ -11,6 +16,14 @@ const getHelpers = (absolutePath) => {
   }
 }
 
+/**
+ * Recursively loads the endpoints under a given directory path, building up the routes from the directory structure.
+ * @param {object} router an express router instance
+ * @param {object} config configuration
+ * @param {object} resources resources for the endpoints to use
+ * @param {string} absolutePath the absolute path to the api endpoints
+ * @param {object} logger a logger intance
+ */
 const init = (router, config, resources, absolutePath = __dirname, logger) => {
   const { modulePath, filePath, apiName } = getHelpers(absolutePath);
   const dir = fs.readdirSync(absolutePath).filter((file) => file !== "index.js");
