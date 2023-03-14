@@ -1,9 +1,9 @@
-const winston = require('winston');
+const winston = require("winston");
 
 const init = (config) => {
-  const service = config && config.serviceName || 'unknown';
+  const service = (config && config.serviceName) || "unknown";
   const logger = winston.createLogger({
-    level: 'info',
+    level: "info",
     format: winston.format.json(),
     defaultMeta: { service },
     transports: [
@@ -20,14 +20,14 @@ const init = (config) => {
   // If we're not in production then log to the `console` with the format:
   // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
   //
-  if (process.env.NODE_ENV !== 'production') {
-    logger.add(new winston.transports.Console({
-      format: winston.format.simple(),
-    }));
+  if (process.env.NODE_ENV !== "production") {
+    logger.add(
+      new winston.transports.Console({
+        format: winston.format.simple(),
+      })
+    );
   }
   return logger;
-}
-
-
+};
 
 module.exports = { init };

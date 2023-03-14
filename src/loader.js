@@ -4,17 +4,17 @@ const express = require("express");
 
 /**
  * Returns some helpful helpers for doing stuff.
- * @param {*} absolutePath 
+ * @param {*} absolutePath
  * @returns some helpful helpers.
  */
 const getHelpers = (absolutePath) => {
   const pathPart = path.relative(__dirname, absolutePath);
   return {
-    apiName: pathPart.substring(pathPart.lastIndexOf('/') + 1 ),
+    endpoint: pathPart.substring(pathPart.lastIndexOf("/") + 1),
     filePath: (file) => path.join(absolutePath, file),
-    modulePath: (file) => `./${path.join(pathPart, file)}`
-  }
-}
+    modulePath: (file) => `./${path.join(pathPart, file)}`,
+  };
+};
 
 /**
  * Recursively loads the endpoints under a given directory path, building up the routes from the directory structure.
@@ -25,8 +25,10 @@ const getHelpers = (absolutePath) => {
  * @param {object} logger a logger intance
  */
 const init = (router, config, resources, absolutePath = __dirname, logger) => {
-  const { modulePath, filePath, apiName } = getHelpers(absolutePath);
-  const dir = fs.readdirSync(absolutePath).filter((file) => file !== "index.js");
+  const { modulePath, filePath, endpoint } = getHelpers(absolutePath);
+  const dir = fs
+    .readdirSync(absolutePath)
+    .filter((file) => file !== "index.js");
 
   dir.forEach((file) => {
     if (fs.statSync(filePath(file)).isDirectory()) {
@@ -36,11 +38,11 @@ const init = (router, config, resources, absolutePath = __dirname, logger) => {
     } else {
       const route = require(modulePath(file));
       if (route.init) {
-        if(config && config[apiName]) {
-          logger.info(`Configuring /${apiName} with supplied config.`)
-          route.init(router, config[apiName], resources);
-        }else {
-          logger.warn(`No config provided for /${apiName} endpoint.`)
+        if (config && config[endpoint]) {
+          logger.info(`Configuring /${endpoint} with supplied config.`);
+          route.init(router, config[endpoint], resources);
+        } else {
+          logger.warn(`No config provided for /${endpoint} endpoint.`);
           route.init(router, config, resources);
         }
       }
@@ -48,4 +50,4 @@ const init = (router, config, resources, absolutePath = __dirname, logger) => {
   });
 };
 
-module.exports = { init }
+module.exports = { init };
