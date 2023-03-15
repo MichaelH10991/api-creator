@@ -33,8 +33,10 @@ Initialise the library with something like this:
 
 ```javascript
 const apiCreator = require("api-creator");
+const path = require("path");
 
-const apiPath = `${__basename}/api`;
+const apiPath = path.resolve("./api/");
+
 apiCreator.init(apiPath, config, resources);
 ```
 

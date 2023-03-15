@@ -1,6 +1,6 @@
-const fs = require("fs");
-const path = require("path");
-const express = require("express");
+import fs from "fs";
+import path from "path";
+import express from "express";
 
 /**
  * Returns some helpful helpers for doing stuff.
@@ -25,6 +25,7 @@ const getHelpers = (absolutePath) => {
  * @param {object} logger a logger intance
  */
 const init = (router, config, resources, absolutePath = __dirname, logger) => {
+  console.log("hereee");
   const { modulePath, filePath, endpoint } = getHelpers(absolutePath);
   const dir = fs
     .readdirSync(absolutePath)
@@ -39,10 +40,11 @@ const init = (router, config, resources, absolutePath = __dirname, logger) => {
       const route = require(modulePath(file));
       if (route.init) {
         if (config && config[endpoint]) {
-          logger.info(`Configuring /${endpoint} with supplied config.`);
+          logger.info(`Loading /${endpoint} with supplied config.`);
           route.init(router, config[endpoint], resources);
         } else {
-          logger.warn(`No config provided for /${endpoint} endpoint.`);
+          logger.warn(`Loading /${endpoint}, no config.`);
+          logger.info(`Loading ${modulePath(file)}.`);
           route.init(router, config, resources);
         }
       }
@@ -50,4 +52,4 @@ const init = (router, config, resources, absolutePath = __dirname, logger) => {
   });
 };
 
-module.exports = { init };
+export default { init };

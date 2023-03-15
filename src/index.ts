@@ -1,8 +1,8 @@
-const express = require("express");
-const cors = require("cors");
-const loader = require("./loader");
-const creatorConfig = require("./config");
-const logger = require("./logger");
+import express from "express";
+import cors from "cors";
+import loader from "./loader";
+import creatorConfig from "./config";
+import logger from "./logger";
 
 let app = express();
 const router = express.Router();
@@ -29,7 +29,7 @@ const init = (apiPath, apiConfig, resources, customApp) => {
     serviceLogger.warn("No config provided for service.");
   }
 
-  if (apiConfig.corsOptions) {
+  if (apiConfig && apiConfig.corsOptions) {
     serviceLogger.info("Configuring cors using:", apiConfig.corsOptions);
     app.use(cors(apiConfig.corsOptions));
   }

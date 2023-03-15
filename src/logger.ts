@@ -30,4 +30,4 @@ const init = (config) => {
   return logger;
 };
 
-module.exports = { init };
+export default { init };
