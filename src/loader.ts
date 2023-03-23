@@ -16,6 +16,8 @@ const getHelpers = (absolutePath: string) => {
   };
 };
 
+console.log(express)
+
 /**
  * Recursively loads the endpoints under a given directory path, building up the routes from the directory structure.
  * @param {object} router an express router instance
@@ -26,8 +28,9 @@ const getHelpers = (absolutePath: string) => {
  */
 const init = (router: any, config: any, resources: object, absolutePath = __dirname, logger: any) => {
   const { modulePath, filePath, endpoint } = getHelpers(absolutePath);
-  const dir = fs.readdirSync(absolutePath).filter((file) => file !== 'index.js');
-
+  const dir = fs
+  .readdirSync(absolutePath)
+  .filter((file) => file !== "index.js");
   dir.forEach((file) => {
     if (fs.statSync(filePath(file)).isDirectory()) {
       const subRouter = express.Router();
