@@ -7,12 +7,12 @@ import express from "express";
  * @param {*} absolutePath
  * @returns some helpful helpers.
  */
-const getHelpers = (absolutePath) => {
+const getHelpers = (absolutePath: string) => {
   const pathPart = path.relative(__dirname, absolutePath);
   return {
     endpoint: pathPart.substring(pathPart.lastIndexOf("/") + 1),
-    filePath: (file) => path.join(absolutePath, file),
-    modulePath: (file) => `./${path.join(pathPart, file)}`,
+    filePath: (file: string) => path.join(absolutePath, file),
+    modulePath: (file: string) => `./${path.join(pathPart, file)}`,
   };
 };
 
@@ -24,7 +24,13 @@ const getHelpers = (absolutePath) => {
  * @param {string} absolutePath the absolute path to the api endpoints
  * @param {object} logger a logger intance
  */
-const init = (router, config, resources, absolutePath = __dirname, logger) => {
+const init = (
+  router: any,
+  config: any,
+  resources: object,
+  absolutePath = __dirname,
+  logger: any
+) => {
   console.log("hereee");
   const { modulePath, filePath, endpoint } = getHelpers(absolutePath);
   const dir = fs

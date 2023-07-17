@@ -14,6 +14,7 @@
     "babel": "^6.23.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "serverless-http": "^3.2.0",
     "typescript": "^4.9.5",
     "winston": "^3.8.2"
   },

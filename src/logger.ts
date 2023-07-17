@@ -1,6 +1,6 @@
 const winston = require("winston");
 
-const init = (config) => {
+const init = (config: any) => {
   const service = (config && config.serviceName) || "unknown";
   const logger = winston.createLogger({
     level: "info",

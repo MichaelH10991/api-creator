@@ -3,6 +3,7 @@ import cors from "cors";
 import loader from "./loader";
 import creatorConfig from "./config";
 import logger from "./logger";
+import serverless from "serverless-http";
 
 let app = express();
 const router = express.Router();
@@ -13,7 +14,7 @@ const router = express.Router();
  * @param {object} apiConfig optional configuration.
  * @param {object} resources optional resources for the apis to use.
  */
-const init = (apiPath, apiConfig, resources, customApp) => {
+const init = (apiPath: any, apiConfig: any, resources: any, customApp: any) => {
   const serviceLogger = logger.init(apiConfig);
 
   if (customApp) {
@@ -38,10 +39,14 @@ const init = (apiPath, apiConfig, resources, customApp) => {
 
   app.use(router);
 
-  app.listen(
-    creatorConfig.port,
-    serviceLogger.info(`app listening on ${creatorConfig.port}`)
-  );
+  if (process.env.ENVIRONMENT === "development") {
+    app.listen(
+      creatorConfig.port,
+      serviceLogger.info(`app listening on ${creatorConfig.port}`)
+    );
+  } else {
+    module.exports.handler = serverless(app);
+  }
 };
 
 module.exports = { init };
