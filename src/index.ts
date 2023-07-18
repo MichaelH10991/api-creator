@@ -39,13 +39,16 @@ const init = (apiPath: any, apiConfig: any, resources: any, customApp: any) => {
 
   app.use(router);
 
-  if (process.env.ENVIRONMENT === "development") {
+  if (creatorConfig.platform === "lambda") {
+    serviceLogger.info("exporting", serverless(app));
+    return {
+      handler: serverless(app),
+    };
+  } else {
     app.listen(
       creatorConfig.port,
       serviceLogger.info(`app listening on ${creatorConfig.port}`)
     );
-  } else {
-    module.exports.handler = serverless(app);
   }
 };
 

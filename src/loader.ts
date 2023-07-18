@@ -31,7 +31,6 @@ const init = (
   absolutePath = __dirname,
   logger: any
 ) => {
-  console.log("hereee");
   const { modulePath, filePath, endpoint } = getHelpers(absolutePath);
   const dir = fs
     .readdirSync(absolutePath)
