@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "preinstall": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-tsc": "tsc",
     "build": "npm run build-tsc"
