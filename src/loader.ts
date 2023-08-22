@@ -1,6 +1,6 @@
-import fs from "fs";
-import path from "path";
-import express from "express";
+import fs from 'fs';
+import path from 'path';
+import express from 'express';
 
 /**
  * Returns some helpful helpers for doing stuff.
@@ -10,7 +10,7 @@ import express from "express";
 const getHelpers = (absolutePath: string) => {
   const pathPart = path.relative(__dirname, absolutePath);
   return {
-    endpoint: pathPart.substring(pathPart.lastIndexOf("/") + 1),
+    endpoint: pathPart.substring(pathPart.lastIndexOf('/') + 1),
     filePath: (file: string) => path.join(absolutePath, file),
     modulePath: (file: string) => `./${path.join(pathPart, file)}`,
   };
@@ -24,17 +24,9 @@ const getHelpers = (absolutePath: string) => {
  * @param {string} absolutePath the absolute path to the api endpoints
  * @param {object} logger a logger intance
  */
-const init = (
-  router: any,
-  config: any,
-  resources: object,
-  absolutePath = __dirname,
-  logger: any
-) => {
+const init = (router: any, config: any, resources: object, absolutePath = __dirname, logger: any) => {
   const { modulePath, filePath, endpoint } = getHelpers(absolutePath);
-  const dir = fs
-    .readdirSync(absolutePath)
-    .filter((file) => file !== "index.js");
+  const dir = fs.readdirSync(absolutePath).filter((file) => file !== 'index.js');
 
   dir.forEach((file) => {
     if (fs.statSync(filePath(file)).isDirectory()) {

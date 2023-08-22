@@ -1,9 +1,9 @@
-import express from "express";
-import cors from "cors";
-import loader from "./loader";
-import creatorConfig from "./config";
-import logger from "./logger";
-import serverless from "serverless-http";
+import express from 'express';
+import cors from 'cors';
+import loader from './loader';
+import creatorConfig from './config';
+import logger from './logger';
+import serverless from 'serverless-http';
 
 let app = express();
 const router = express.Router();
@@ -18,20 +18,20 @@ const init = (apiPath: any, apiConfig: any, resources: any, customApp: any) => {
   const serviceLogger = logger.init(apiConfig);
 
   if (customApp) {
-    serviceLogger.info("Using custom app");
+    serviceLogger.info('Using custom app');
     app = customApp;
   }
 
   if (!apiPath) {
-    throw new Error("Cannot proceed loading endpoints without an apiPath.");
+    throw new Error('Cannot proceed loading endpoints without an apiPath.');
   }
 
   if (!apiConfig) {
-    serviceLogger.warn("No config provided for service.");
+    serviceLogger.warn('No config provided for service.');
   }
 
   if (apiConfig && apiConfig.corsOptions) {
-    serviceLogger.info("Configuring cors using:", apiConfig.corsOptions);
+    serviceLogger.info('Configuring cors using:', apiConfig.corsOptions);
     app.use(cors(apiConfig.corsOptions));
   }
 
@@ -39,16 +39,13 @@ const init = (apiPath: any, apiConfig: any, resources: any, customApp: any) => {
 
   app.use(router);
 
-  if (creatorConfig.platform === "lambda") {
-    serviceLogger.info("exporting", serverless(app));
+  if (creatorConfig.platform === 'lambda') {
+    serviceLogger.info('exporting', serverless(app));
     return {
       handler: serverless(app),
     };
   } else {
-    app.listen(
-      creatorConfig.port,
-      serviceLogger.info(`app listening on ${creatorConfig.port}`)
-    );
+    app.listen(creatorConfig.port, () => serviceLogger.info(`app listening on ${creatorConfig.port}`));
   }
 };
 
