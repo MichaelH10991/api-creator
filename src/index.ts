@@ -4,6 +4,7 @@ import loader from './loader';
 import creatorConfig from './config';
 import logger from './logger';
 import serverless from 'serverless-http';
+import awsServerlessExpress from "aws-serverless-express";
 
 let app = express();
 const router = express.Router();
@@ -40,10 +41,16 @@ const init = (apiPath: any, apiConfig: any, resources: any, customApp: any) => {
   app.use(router);
 
   if (creatorConfig.platform === 'lambda') {
-    serviceLogger.info('exporting', serverless(app));
+    const server = awsServerlessExpress.createServer(app)
+    // serviceLogger.info('exporting', serverless(app));
+    // return {
+    //   handler: serverless(app),
+    // };
     return {
-      handler: serverless(app),
-    };
+      handler: (event: any, context: any) => {
+        awsServerlessExpress.proxy(server, event, context);
+      }
+    }
   } else {
     app.listen(creatorConfig.port, () => serviceLogger.info(`app listening on ${creatorConfig.port}`));
   }
