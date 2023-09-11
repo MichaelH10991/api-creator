@@ -1,20 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
-
-/**
- * Returns some helpful helpers for doing stuff.
- * @param {*} absolutePath
- * @returns some helpful helpers.
- */
-const getHelpers = (absolutePath: string) => {
-  const pathPart = path.relative(__dirname, absolutePath);
-  return {
-    endpoint: pathPart.substring(pathPart.lastIndexOf('/') + 1),
-    filePath: (file: string) => path.join(absolutePath, file),
-    modulePath: (file: string) => `./${path.join(pathPart, file)}`,
-  };
-};
+import getHelpers from './helpers';
 
 /**
  * Recursively loads the endpoints under a given directory path, building up the routes from the directory structure.

@@ -10,7 +10,8 @@
     "test": "echo \"no test specified\" && exit 0",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "tslint -p tsconfig.json"
+    "lint": "tslint -p tsconfig.json",
+    "publish": "./scripts/publish.sh"
   },
   "author": "Michael Humphries",
   "license": "ISC",
