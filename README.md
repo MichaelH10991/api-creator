@@ -4,9 +4,7 @@ An express wrapper which allows you to quickly and dynamically create api endpoi
 
 ## Installation
 
-It'll be a npm package eventually, but for the meantime, in your node project run:
-
-`npm i https://github.com/MichaelH10991/api-creator.git`
+`npm i @iobxt/api-creator`
 
 ## Usage
 
@@ -23,7 +21,7 @@ Your api endpoints must look something like this:
 ```javascript
 // doSomething.js
 const init = (router, config, resources) => {
-  router.get("/hello", (req, res) => res.send("hello"));
+  router.get('/hello', (req, res) => res.send('hello'));
 };
 
 module.exports = { init };
@@ -32,10 +30,10 @@ module.exports = { init };
 Initialise the library with something like this:
 
 ```javascript
-const apiCreator = require("api-creator");
-const path = require("path");
+const apiCreator = require('api-creator');
+const path = require('path');
 
-const apiPath = path.resolve("./api/");
+const apiPath = path.resolve('./api/');
 
 apiCreator.init(apiPath, config, resources);
 ```
@@ -44,18 +42,35 @@ Your endpoints will be accessible on:
 
 http://localhost:8080/foo/
 
+# As a lambda
+
+Create a `lambda.js` file and export the module like so;
+
+```javascript
+const api = apiCreator.init(apiPath, config, resources);
+
+module.exports = api.handler;
+```
+
 # Configuration
 
 You can control the creator behaviour with the following environment varibles:
 
-| Name     | Description           | Default value |
-| -------- | --------------------- | ------------- |
-| APP_PORT | the port to listen on | 8080          |
+| Name     | Description           | Default value | Possible values     |
+| -------- | --------------------- | ------------- | ------------------- |
+| APP_PORT | the port to listen on | 8080          |                     |
+| PLATFORM | How the api runs      | development   | development, lambda |
 
 You can provide endpoint specific configuration by passing in a `config` param.
 
 ```javascript
 const config = {
+  corsOptions: {
+    origin: ['http://localhost:3000']
+  },
+  bodyParserOptions: {
+    bodyParserEnabled: true,
+  },
   foo: {
     some: "config";
   }

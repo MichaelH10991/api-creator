@@ -3,8 +3,7 @@ import cors from 'cors';
 import loader from './loader';
 import creatorConfig from './config';
 import logger from './logger';
-import serverless from 'serverless-http';
-import awsServerlessExpress from "aws-serverless-express";
+import awsServerlessExpress from 'aws-serverless-express';
 
 let app = express();
 const router = express.Router();
@@ -14,6 +13,7 @@ const router = express.Router();
  * @param {String} apiPath The absolute path to the directory containing the apis.
  * @param {object} apiConfig optional configuration.
  * @param {object} resources optional resources for the apis to use.
+ * @param {object} customApp optional express app to override the default.
  */
 const init = (apiPath: any, apiConfig: any, resources: any, customApp: any) => {
   const serviceLogger = logger.init(apiConfig);
@@ -31,26 +31,34 @@ const init = (apiPath: any, apiConfig: any, resources: any, customApp: any) => {
     serviceLogger.warn('No config provided for service.');
   }
 
+  // configuration
   if (apiConfig && apiConfig.corsOptions) {
     serviceLogger.info('Configuring cors using:', apiConfig.corsOptions);
     app.use(cors(apiConfig.corsOptions));
   }
 
+  if (apiConfig && apiConfig.bodyParserEnabled) {
+    app.use(express.json());
+    app.use(
+      express.urlencoded({
+        extended: true,
+      }),
+    );
+  }
+
+  // load endpoints
   loader.init(router, apiConfig, resources, apiPath, serviceLogger);
 
+  // use endpoints
   app.use(router);
 
   if (creatorConfig.platform === 'lambda') {
-    const server = awsServerlessExpress.createServer(app)
-    // serviceLogger.info('exporting', serverless(app));
-    // return {
-    //   handler: serverless(app),
-    // };
+    const server = awsServerlessExpress.createServer(app);
     return {
       handler: (event: any, context: any) => {
         awsServerlessExpress.proxy(server, event, context);
-      }
-    }
+      },
+    };
   } else {
     app.listen(creatorConfig.port, () => serviceLogger.info(`app listening on ${creatorConfig.port}`));
   }

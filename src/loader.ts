@@ -41,7 +41,7 @@ const init = (router: any, config: any, resources: object, absolutePath = __dirn
           route.init(router, config[endpoint], resources);
         } else {
           logger.warn(`Loading /${endpoint}, no config.`);
-          logger.info(`Loading ${modulePath(file)}.`);
+          logger.info(`Loading ${path.basename(modulePath(file))}.`);
           route.init(router, config, resources);
         }
       }
