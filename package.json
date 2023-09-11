@@ -11,7 +11,7 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
-    "publish": "./scripts/publish.sh"
+    "publish:version": "./scripts/publish.sh"
   },
   "author": "Michael Humphries",
   "license": "ISC",

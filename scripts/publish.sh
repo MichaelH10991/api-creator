@@ -7,18 +7,19 @@ major)
     echo "Publishing major version."
     npm version major
     git push
+    npm publish
     ;;
 minor)
     echo "Publishing minor version."
     npm version minor
     git push
-    # Stop logic
+    npm publish
     ;;
 patch)
     echo "Publishing patch version."
     npm version patch
     git push
-    # Stop logic
+    npm publish
     ;;
 *)
 	# Default logic

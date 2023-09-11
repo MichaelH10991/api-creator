@@ -82,5 +82,5 @@ This will configure everything under the `foo` directory.
 # Publishing a new version
 
 1. Commit changes
-2. Run `npm publish`
+2. Run `npm publish:version`
 3. Profit
