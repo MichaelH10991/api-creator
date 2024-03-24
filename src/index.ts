@@ -38,6 +38,7 @@ const init = (apiPath: any, apiConfig: any, resources: any, customApp: any) => {
   }
 
   if (apiConfig && apiConfig.bodyParserEnabled) {
+    serviceLogger.info('Body parsing enabled.');
     app.use(express.json());
     app.use(
       express.urlencoded({

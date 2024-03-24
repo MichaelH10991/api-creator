@@ -68,9 +68,7 @@ const config = {
   corsOptions: {
     origin: ['http://localhost:3000']
   },
-  bodyParserOptions: {
-    bodyParserEnabled: true,
-  },
+  bodyParserEnabled: true,
   foo: {
     some: "config";
   }
@@ -82,5 +80,5 @@ This will configure everything under the `foo` directory.
 # Publishing a new version
 
 1. Commit changes
-2. Run `npm publish:version`
+2. Run `npm publish:version major|minor|patch`
 3. Profit

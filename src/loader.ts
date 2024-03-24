@@ -27,8 +27,8 @@ const init = (router: any, config: any, resources: object, absolutePath = __dirn
           logger.info(`Loading /${endpoint} with supplied config.`);
           route.init(router, config[endpoint], resources);
         } else {
-          logger.warn(`Loading /${endpoint}, no config.`);
-          logger.info(`Loading ${path.basename(modulePath(file))}.`);
+          // logger.warn(`Loading /${endpoint}, no config.`);
+          logger.info(`Loading ${path.parse(modulePath(file)).name}.`);
           route.init(router, config, resources);
         }
       }
